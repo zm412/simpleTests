@@ -1,0 +1,115 @@
+<!DOCTYPE html> <html> <head> 
+				<meta charset=utf-8"> <title></title> <body>
+<style>
+
+.secBlock {
+border: 1px solid black;
+position: absolute;
+top: 20px;
+right: 20px;
+width: 100px;
+height: 120px;
+padding-left: 10px;
+}
+table{
+border: 2px solid black;
+border-collapse: collapse;
+position: absolute;
+top: 30%;
+left: 35%;
+width: 25%;
+height: 25%;
+}
+td, th{
+text-align: center;
+border: 2px solid black;
+width: 30px;
+height: 25px;
+}
+
+
+.none{
+pointer-events: none;
+
+}
+
+</style><body>
+	<div id = 'forUl'></div>
+	<div id = 'forButt'>
+			<button id = 'butt'>Отправить</button>	
+	</div>
+		
+</body> 
+<script>
+'use strict'
+let divForUl = document.getElementById('forUl');
+let butt = document.getElementById('butt');
+let obj ={
+'JavaScript это тоже самое что и Java?':{
+'quest':['Нет.', 'Да.','Когда как'],
+'answ': 'Нет.',
+'name': 'quest1',
+},
+'Сколько параментров можно передавать в фукнцию?':{
+'quest': ['Только столько, сколько указано при ее созданиию','Минимум 1.','Сколько угодно.'],
+'answ': 'Сколько угодно.',
+'name': 'quest2', 
+},
+'Что такое: "use strict"?':{
+'quest': ['Просто строка','Функция','Строгий режим'],
+'answ': 'Строгий режим',
+'name': 'quest3',
+}
+}
+
+startAction(obj);
+
+function startAction(obj){
+createUl(obj);
+	let inps = divForUl.querySelectorAll('input');
+	butt.addEventListener('click', function(){
+		let rightAnsw = 0;
+		let wrongAnsw = 0;
+		let allQuest = 0;
+
+		for(let key in obj){
+				allQuest++;
+		for(let i = 0; i < inps.length; i++){
+				if( inps[i].checked && inps[i].name== obj[key]['name'] && inps[i].closest('p').textContent == obj[key]['answ']  ){
+				rightAnsw++;	
+				}
+				else if( inps[i].checked && inps[i].name == obj[key]['name'] && inps[i].closest('p').textContent != obj[key]['answ']  ){
+				wrongAnsw++;
+							}
+				}
+		}
+			let a = 100 / allQuest * rightAnsw;
+			alert(`Правильных ответов: ${rightAnsw} (${Math.ceil(a)});
+Неправильных ответов: ${wrongAnsw};
+Без ответов: ${allQuest - (rightAnsw + wrongAnsw)} `);
+	});
+}
+
+
+function createUl(obj){
+	let ul = createEl('ul', divForUl);	
+	for(let key in obj){	
+    let li = createEl('li', ul);		
+	li.innerHTML = key;
+		for(let i = 0; i < obj[key]['quest'].length; i++){
+			let p = createEl('p', li);
+			p.innerHTML = '<input type = "radio" value = "' + i+1 + '" name = "' + obj[key]['name'] + '">' + obj[key]['quest'][i];
+		}
+	}
+}
+
+
+function createEl(tag, par ){		
+	let el = document.createElement(tag);	
+		par.appendChild(el);
+		return el;
+}		
+
+</script>
+	</head>
+</html>
